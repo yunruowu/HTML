@@ -1,0 +1,110 @@
+h1{
+    font-style: italic;
+    color: rgb(192, 182, 38);
+    margin: 30px;
+    text-align: center;
+}
+
+#xx{
+    background-image:url("./001.jpg");
+    background-size: auto;
+}
+#food{  
+    width: 20px;
+    height: 20px;
+    background-color: #120f88;
+    position: absolute;
+    /* left:40px;
+    top: 20px; */
+    
+}
+#edition{
+    float: right;
+
+    color: coral;
+    
+}
+#snake{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background-color: blueviolet;
+    left:0px;
+    top:0px;
+    /* margin-left: -300px; */
+}
+#map{
+  
+    margin-top: 20px;
+    margin-right: auto;
+    margin-bottom: 30px;
+    margin-left: auto;
+    width: 480px;
+    height: 320px;
+    background-color:rgb(21, 218, 142);
+    color:white;
+    text-align:center;
+    padding:0px;
+    position: relative;
+}
+/* #play{
+    text-align: center;
+    font: 1em sans-serif;
+    font-size: 10.6px;
+    background-color: aliceblue;
+} */
+#play1{
+    text-align: center;
+    /* font: 1em sans-serif; */
+    position: relative;
+    left: -10%;
+    font-size: 10.6px;
+    background-color: rgb(217, 182, 238);
+}
+#play2{
+    text-align: center;   
+    /* font: 1em sans-serif; */
+    position: relative;
+    right: -10%;
+    font-size: 10.6px;
+    background-color: rgb(217, 182, 238);
+}
+#butt{
+    text-align: center;
+    font-size: 0.6px;
+    background-color: aliceblue;
+}
+
+
+h2{
+    text-align: center;
+}
+    
+
+#select{
+    text-align: center;
+}
+.select{
+    text-align: center;
+    font-size: 0.6px;
+    background-color: rgb(217, 182, 238);
+}
+.div {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 0.4px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+    text-shadow: 0 1px 1px black;
+    color:white;
+    font-weight: bold;
+    
+}
+.div:active{
+    box-shadow: .05em .1em .2em rgba(0,0,0,.6) inset;
+    border-color: rgba(0,0,0,.3);
+    text-align: center;
+    background: #bbb;
+}

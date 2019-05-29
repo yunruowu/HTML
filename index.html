@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+            <link rel = "stylesheet" type="text/css" href="theme.css" >
+            
+            <title>Hello world demo</title>
+    </head>
+    <div onkeydown="getDestination(event)"></div>
+    <body id="xx">
+        <h1>
+            贪吃蛇大作战
+        </h1>
+        <!-- #<p id ="edition"单机版</p> -->
+            <h2 id = "play">
+                    <div>
+                        <span id = "play1">
+                            玩家1：0
+                        </span>
+                        <span  id = "play2">
+                            玩家2：0
+                        </span>
+                    </div>
+                   
+            </h2>
+       
+        <h2>
+            <div id="map">
+                <div id = "food" style="left: 40px;top: 40px;">
+
+                </div>
+                <div id = "snake">
+                    
+                </div>
+            </div>
+        </h2>
+        <script type="text/javascript" src="fun.js"></script>
+        <h2>      
+                <button class="div" onclick="start()">开始</button>
+                <button class="div" onclick="end()">暂停</button>           
+        </h2>
+            
+       
+        <div id = "select">
+            <span class="select">level:</span>
+            <select class="select" id = "seltable">
+                <option value="Easy" class="sel">Easy</option>
+                <option value="Middle" class="sel">Middle</option>
+                <option value="Hard" class="sel">Hard</option>
+            </select>
+        </div>
+        <p><span id = "demo"></span></p>
+        
+    </body>
+</html>
