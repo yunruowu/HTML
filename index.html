@@ -8,17 +8,23 @@
     </head>
     <div onkeydown="getDestination(event)"></div>
     <body id="xx">
+        <!-- <div id="circle"></div> -->
         <h1>
             贪吃蛇大作战
         </h1>
         <!-- #<p id ="edition"单机版</p> -->
             <h2 id = "play">
                     <div>
-                        <span id = "play1" >玩家1:</span>                            
+                        <img src="p1.jpg" alt="" id="p1" height="40px" width="40px"/>
+                        <span id="showtime"></span> 
+                        <img src="p2.jpg" alt="" id="p2" height="40px" width="40px"/>
+                    </div>
+                    <div>
+                          
+                        <span id = "play1" >玩家1:</span>                                                 
                         <span id = "out1"></span>
-                        <span  id = "play2">
-                            玩家2:
-                        </span>
+                        <span  id = "play2">玩家2:</span>
+                        <span id = "out1"></span>
                     </div>
                    
             </h2>
@@ -37,7 +43,8 @@
         <script type="text/javascript" src="fun.js"></script>
         <h2>      
                 <button class="div" onclick="start()">开始</button>
-                <button class="div" onclick="end()">暂停</button>           
+                <button class="div" onclick="end()">暂停</button>   
+                       
         </h2>
             
        

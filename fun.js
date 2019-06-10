@@ -2,78 +2,93 @@ var d_i = 0;
 var d_j = 0;
 var destination = 'D';
 var score_play1 = 0;
+var key_num = 0;
+var changeboll = 1;
 // var start = 0;
 function getspeed(){
 	var level_d = document.getElementById('seltable');
     var index = level_d.selectedIndex;
     var val = level_d.options[index].value;
+  
     var speed = 0;
-    
-    if (val == "Easy"){
-        speed = 200;
-    }
-    if (val == "Middle"){
-        speed = 100;
-	}
-    if (val == "Hard"){
-       	speed = 50;
+    if(val != null)
+    {    if (val == "Easy"){
+            speed = 200;
+           
+        }
+        if (val == "Middle"){
+            speed = 100;
+        }
+        if (val == "Hard"){
+            speed = 50;
+        }
     }
     else{
-        speed = 400;
+        speed = 40;
+       
     }
 
-    if ((speed - score_play1/5*20)>=10){
+    if((speed - score_play1/5*20)>=10){
         speed = speed - score_play1/5*20;
+        
         return speed;
     }else{
-        return 
+        return 10;
     }
 }
 var ekey = 87;
 document.onkeydown =  function getDestination(evt){
     ekey = evt.keyCode;
-    if (ekey==87){
-        // console.log("wwww");
-        if(destination =='S')
-        {
-            destination =='S'
+    if(key_num==0){
+        if (ekey==87){
+            // console.log("wwww");
+            if(destination =='S')
+            {
+                key_num = 0;
+                destination =='S';
+            }
+            else{
+                destination ='W';
+            }
         }
-        else{
-            destination ='W';
+        if (ekey==65){
+            // console.log("AAA");
+            if(destination =='D')
+            {
+                destination =='D';
+                key_num = 0;
+            }
+            else{
+                destination ='A';
+            }
+            // destination ='A';
         }
-    }
-    if (ekey==65){
-        // console.log("AAA");
-        if(destination =='D')
-        {
-            destination =='D'
+        if (ekey==83){
+            // console.log("SSS");
+            if(destination =='W')
+            {
+                destination =='W';
+                key_num = 0;
+            }
+            else{
+                destination ='S';
+
+            }
+            // destination ='S';
         }
-        else{
-            destination ='A';
+        if (ekey==68){
+            // console.log("DDD");
+            if(destination =='A')
+            {
+                destination =='A';
+                key_num = 0;
+            }
+            else{
+                destination ='D';
+            }
+            // destination= 'D';
         }
-        // destination ='A';
-    }
-    if (ekey==83){
-        // console.log("SSS");
-        if(destination =='W')
-        {
-            destination =='W'
-        }
-        else{
-            destination ='S';
-        }
-        // destination ='S';
-    }
-    if (ekey==68){
-        // console.log("DDD");
-        if(destination =='A')
-        {
-            destination =='A'
-        }
-        else{
-            destination ='D';
-        }
-        // destination= 'D';
+        key_num++;
     }
     else{
         // console.log("mmmm");
@@ -136,7 +151,7 @@ function hit_body(head){
 }
 
 function move(){
-    console.log(getspeed(),score_play1)
+    
     var b = document.getElementById('snake'); 
     // console.log("1111");
     var pre_i = d_i;
@@ -234,9 +249,19 @@ function move(){
         }
     }
     var out1_play1 = document.getElementById("out1");
-    changespeed();
-    out1_play1.innerHTML = score_play1 + "分";
+    if(score_play1%5 == 1 && score_play1 != 1&&changeboll == 0)
+    { 
+        
+        changeboll = 1;
+    }
+    if(score_play1%5 == 0 && score_play1 != 0&&changeboll == 1)
+    { 
+        changespeed();
+        changeboll = 0;
+    }
 
+    out1_play1.innerHTML = score_play1 + "分";
+    key_num = 0;
 }
 var sta_or_end = 0;
 
@@ -256,14 +281,15 @@ function start(){
     if(sta_or_end==0)
     {
         startVar = window.setInterval("move()",getspeed());
-        
+        starttime();
         sta_or_end = 1;
     }
 }
 function end(){
     if(sta_or_end==1){
-
+        endtime();
         clearInterval(startVar);
+        
         sta_or_end = 0;
     }
     
@@ -273,4 +299,39 @@ function changespeed()
 {
     end();
     start();
+}
+
+
+
+function settime(a){
+    if(a<10)
+        a = "0"+a;
+    return a;
+}
+     h = 0;
+     m = 0;
+     s = 0;
+
+function starttime(){
+    var showh = settime(h);
+    var showm = settime(m);
+    var shows = settime(s);
+    document.getElementById("showtime").innerHTML=showh+":"+showm+":"+shows;
+
+       s++;
+    if(s == 60)
+       {
+        s = 0;
+        m++;
+        }
+    if(m == 60){
+        m = 0;
+        h++;
+    }
+
+    t = setTimeout("starttime()",1000);
+}
+
+function endtime() {
+    clearTimeout(t);
 }
