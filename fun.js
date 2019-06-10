@@ -265,6 +265,52 @@ function move(){
 }
 var sta_or_end = 0;
 
+function up(){
+    if(destination =='S')
+            {
+                key_num = 0;
+                destination =='S';
+            }
+            else{
+                destination ='W';
+            }
+}
+function down(){
+    if(destination =='W')
+            {
+                key_num = 0;
+                destination =='W';
+            }
+            else{
+                destination ='S';
+            }
+}
+function left(){
+    if(destination =='D')
+            {
+                key_num = 0;
+                destination =='D';
+            }
+            else{
+                destination ='A';
+            }
+}
+function right(){
+    if(destination =='A')
+            {
+                key_num = 0;
+                destination =='A';
+            }
+            else{
+                destination ='D';
+            }
+}
+
+
+
+
+
+
 function start(){
     // var level_d = document.getElementById('seltable');
     // var index = levelu_d.selectedIndex;

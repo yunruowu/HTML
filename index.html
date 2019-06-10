@@ -31,32 +31,35 @@
        
         <h2>
             <div id="map">
-                <div id = "food" style="left: 40px;top: 40px;">
-
+                <div id="des">
+                    <button id ="up" class="span" onclick="up()">W</button>
+                </div> 
+                <div id="s">
+                    <button id ="left" class="span" onclick="left()">A</button>
+                    <button id ="down" class="span" onclick="down()">S</button>  
+                    <button id ="right" class="span" onclick="right()">D</button>
                 </div>
-                <div id = "snake">
                 
-                </div>
+                <div id = "food" style="left: 40px;top: 40px;"></div>
+                <div id = "snake"></div>
                 <!-- <div id="snake1"></div> -->
             </div>
         </h2>
         <script type="text/javascript" src="fun.js"></script>
-        <h2>      
+        <h2> 
+            <div id = "select">
                 <button class="div" onclick="start()">开始</button>
-                <button class="div" onclick="end()">暂停</button>   
-                       
+                <button class="div" onclick="end()">暂停</button> 
+                <span class="select">level:</span>
+                <select class="select" id = "seltable">
+                    <option value="Easy" class="sel">Easy</option>
+                    <option value="Middle" class="sel">Middle</option>
+                    <option value="Hard" class="sel">Hard</option>
+                </select>
+            </div>
+           
+                        
         </h2>
-            
-       
-        <div id = "select">
-            <span class="select">level:</span>
-            <select class="select" id = "seltable">
-                <option value="Easy" class="sel">Easy</option>
-                <option value="Middle" class="sel">Middle</option>
-                <option value="Hard" class="sel">Hard</option>
-            </select>
-        </div>
-        <p><span id = "demo"></span></p>
-        
+        <embed src="001.mp3" hidden="true" autostart="true" loop="true"> 
     </body>
 </html>
