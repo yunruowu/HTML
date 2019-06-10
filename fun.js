@@ -7,17 +7,26 @@ function getspeed(){
 	var level_d = document.getElementById('seltable');
     var index = level_d.selectedIndex;
     var val = level_d.options[index].value;
+    var speed = 0;
+    
     if (val == "Easy"){
-        return 200 - score_play1/5*50;
+        speed = 200;
     }
     if (val == "Middle"){
-        return 100;
+        speed = 100;
 	}
     if (val == "Hard"){
-       	return 50;
+       	speed = 50;
     }
     else{
-        return 400;
+        speed = 400;
+    }
+
+    if ((speed - score_play1/5*20)>=10){
+        speed = speed - score_play1/5*20;
+        return speed;
+    }else{
+        return 
     }
 }
 var ekey = 87;
@@ -225,6 +234,7 @@ function move(){
         }
     }
     var out1_play1 = document.getElementById("out1");
+    changespeed();
     out1_play1.innerHTML = score_play1 + "分";
 
 }
@@ -259,3 +269,8 @@ function end(){
     
 }
 
+function changespeed()
+{
+    end();
+    start();
+}
