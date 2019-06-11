@@ -4,12 +4,13 @@ h1{
     margin: 30px;
     text-align: center;
 }
-
+/* 背景图片 */
 #xx{
     background-image:url("./001.jpg");
     background-size: cover;
     
 }
+/* 食物 */
 #food{  
     width: 20px;
     height: 20px;
@@ -19,22 +20,17 @@ h1{
     top: 20px; */
     
 }
-#edition{
-    float: right;
 
-    color: coral;
-    
-}
-#snake{
+/* #snake{
     width: 20px;
     height: 20px;
     position: absolute;
     background-color:#112343;
     left:0px;
     top:0px;
-    /* margin-left: -300px; */
-}
-
+    
+} */
+/* 蛇头 */
 #snake{
     width: 18px;
     height: 18px;
@@ -44,6 +40,7 @@ h1{
     -webkit-border-radius: 50px;
     border-radius: 50px;
 }
+/* 蛇的身体 */
 #snake1{
     width: 18px;
     height: 18px;
@@ -53,8 +50,8 @@ h1{
     top:0px;
     /* margin-left: -300px; */
 }
+/* 地图 */
 #map{
-  
     margin-top: 20px;
     margin-right: auto;
     margin-bottom: 30px;
@@ -75,6 +72,8 @@ h1{
     font-size: 10.6px;
     background-color: aliceblue;
 } */
+
+/* 玩家显示的渲染 */
 #play1{
     text-align: center;
     /* font: 1em sans-serif; */
@@ -93,6 +92,8 @@ h1{
     color: aqua;
     /* background-color: rgb(217, 182, 238); */
 }
+
+/* 头像 */
 #p1{
     text-align: center;
     /* font: 1em sans-serif; */
@@ -109,9 +110,11 @@ h1{
     font-size: 10.6px;
     background-color: rgb(217, 182, 238);
 }
+/* 时间显示 */
 #showtime{
     color:white;
 }
+/* 得分 */
 #out1{
     text-align: center;   
     /* font: 1em sans-serif; */
@@ -132,7 +135,7 @@ h2{
     text-align: center;
 }
     
-
+/* 选择框渲染 */
 #select{
     text-align: center;
 }
@@ -141,6 +144,8 @@ h2{
     font-size: 1px;
     background-color: #ddd;
 }
+
+/* 按钮渲染 */
 .div {
     display: inline-block;
     padding: .3em .5em;
@@ -160,6 +165,7 @@ h2{
     text-align: center;
     background: #bbb;
 }
+/* 方向键渲染 */
 .span {
     display: inline-block;
     padding: .3em .5em;
@@ -179,6 +185,7 @@ h2{
     text-align:center;
     background: #bbb;
 }
+/* 方向键位置 */
 #up{
     position: absolute;
     left:120%;

@@ -6,19 +6,23 @@
             
             <title>Hello world demo</title>
     </head>
+    <!-- 获取键盘事件 -->
     <div onkeydown="getDestination(event)"></div>
     <body id="xx">
-        <!-- <div id="circle"></div> -->
+        
         <h1>
             贪吃蛇大作战
         </h1>
-        <!-- #<p id ="edition"单机版</p> -->
+            <!-- 玩家信息 -->
             <h2 id = "play">
+                <!-- 头像 -->
                     <div>
                         <img src="p1.jpg" alt="" id="p1" height="40px" width="40px"/>
                         <span id="showtime"></span> 
                         <img src="p2.jpg" alt="" id="p2" height="40px" width="40px"/>
                     </div>
+
+                    <!-- 得分 -->
                     <div>
                           
                         <span id = "play1" >玩家1:</span>                                                 
@@ -30,7 +34,9 @@
             </h2>
        
         <h2>
+            <!-- 地图 -->
             <div id="map">
+                <!-- 虚拟按键 -->
                 <div id="des">
                     <button id ="up" class="span" onclick="up()">W</button>
                 </div> 
@@ -39,27 +45,27 @@
                     <button id ="down" class="span" onclick="down()">S</button>  
                     <button id ="right" class="span" onclick="right()">D</button>
                 </div>
-                
+                <!-- 蛇和食物 -->
                 <div id = "food" style="left: 40px;top: 40px;"></div>
                 <div id = "snake"></div>
-                <!-- <div id="snake1"></div> -->
             </div>
         </h2>
         <script type="text/javascript" src="fun.js"></script>
         <h2> 
             <div id = "select">
+                <!-- 开始和暂停 -->
                 <button class="div" onclick="start()">开始</button>
                 <button class="div" onclick="end()">暂停</button> 
+                <!-- 难度选择 -->
                 <span class="select">level:</span>
                 <select class="select" id = "seltable">
                     <option value="Easy" class="sel">Easy</option>
                     <option value="Middle" class="sel">Middle</option>
                     <option value="Hard" class="sel">Hard</option>
                 </select>
-            </div>
-           
-                        
+            </div>              
         </h2>
+        <!-- 背景音乐 -->
         <embed src="001.mp3" hidden="true" autostart="true" loop="true"> 
     </body>
 </html>
