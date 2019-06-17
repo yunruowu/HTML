@@ -3,13 +3,25 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var sqlite3 = require('sqlite3');
+
+var cookieParser = require('cookie-parser')
+var util = require('util');
+app.use(cookieParser())
+
+
+var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+//   
+var path = require('path');
+console.log(path)
+app.use(express.static(path.join(__dirname, 'public')));
+var dir = __dirname+'/public/';
+// app.use('/public', express.static('public'));
 
 app.get('/', function (req, res) {
     console.log("主页 POST 请求");
     res.send('Hello POST');
  })
-  
 
 
 //注册一个账户，如果已经存在进行登录
@@ -27,7 +39,8 @@ app.post("/register",  urlencodedParser, function (req, res) {
         if (row != undefined) {
             console.log("用户存在");
             // res.send("用户已注册");
-            res.redirect("/login");
+            console.log(__dirname)
+            res.sendFile(dir +'login.html')
         }
         // 未注册 
         else {
@@ -37,7 +50,7 @@ app.post("/register",  urlencodedParser, function (req, res) {
                 db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, pwd]);
                 console.log("注册成功！")
             });
-            res.redirect("./login");
+            res.sendFile(dir +'login.html')
         }
         db.close();
     });
@@ -62,15 +75,24 @@ app.post("/login", urlencodedParser,function (req, res) {
         else {
             if(row.password==pwd){
                 // res.send("登录成功");
-               return res.redirect('/index');
+                
+                // res.sendFile('/HTML/snake/theme.css');
+                // res.sendFile('/HTML/snake/fun.js');
+                console.log(__dirname)
+                res.sendFile(dir +'index.html');
             }
             else{
-                res.send("登录失败:密码错误！")
+                res.send("登录失败:密码错误！");
             }
         }
         db.close();
     });
 })
+
+app.get("/lo", urlencodedParser,function (req, res) {
+    res.send('aa    ');
+}
+)
 
 app.post("/", function (req, res) {
     res.send(" 登录成功");
