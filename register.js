@@ -8,6 +8,9 @@ var cookieParser = require('cookie-parser')
 var util = require('util');
 app.use(cookieParser())
 
+var session = require('express-session');
+
+
 
 var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -18,10 +21,37 @@ app.use(express.static(path.join(__dirname, 'public')));
 var dir = __dirname+'/public/';
 // app.use('/public', express.static('public'));
 
+
+
+
+app.use(session({
+    secret: 'dev',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 30*24*60*1000 } //30 天免登陆
+}));
+
 app.get('/', function (req, res) {
-    console.log("主页 POST 请求");
-    res.send('Hello POST');
- })
+    console.log("ssss");
+});
+
+
+
+// app.get('/', function (req, res) {
+//     if(req.session.use   rname){  //判断session 状态，如果有效，则返回主页，否则转到登录页面
+//         //   /  res.render('home',{username : req.session.username});
+//     }else{
+//             res.redirect('login');
+//     }
+// })
+    
+
+
+app.post('/logout', function (req, res) {
+    req.session.username = null; // 删除session
+    console.log("登出");
+    res.sendFile(dir +'login.html')
+});
 
 
 //注册一个账户，如果已经存在进行登录
@@ -80,6 +110,7 @@ app.post("/login", urlencodedParser,function (req, res) {
                 // res.sendFile('/HTML/snake/fun.js');
                 console.log(__dirname)
                 res.sendFile(dir +'index.html');
+                req.session.username = username
             }
             else{
                 res.send("登录失败:密码错误！");
@@ -87,15 +118,6 @@ app.post("/login", urlencodedParser,function (req, res) {
         }
         db.close();
     });
-})
-
-app.get("/lo", urlencodedParser,function (req, res) {
-    res.send('aa    ');
-}
-)
-
-app.post("/", function (req, res) {
-    res.send(" 登录成功");
 })
 
 var server = app.listen(8081, function () {
