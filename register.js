@@ -4,9 +4,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var sqlite3 = require('sqlite3');
 
-var cookieParser = require('cookie-parser')
+// var cookieParser = require('cookie-parser')
 var util = require('util');
-app.use(cookieParser())
+// app.use(cookieParser())
 
 var session = require('express-session');
 

@@ -323,13 +323,58 @@ function endtime() {
 }
 
 
-function ajax(){
+// function ajax() {
+//     var oAjax = new XMLHttpRequest();
+//     oAjax.onreadystatechange = function () {
+//         if (oAjax.readyState == 4 && oAjax.status == 200) {
+//             alert(oAjax.responseText);
+//         }
+//     }
+//     oAjax.open('GET', '1.cgi', true);
+//     oAjax.send();
+// }
+
+
+function fS(item){
+    var arr =  eval(item);
+    // var arr = eval(item);
+//循环遍历返回的对象
+    alert("cheng")
+    for(var i=0; i<arr.length; i++)
+    {
+     
+     var oli=document.createElement('li'); 
+    //  oli.innerHTML='姓名：<strong>' +=arr[i].user='</ strong> 性别：<span>' + arr[i].sex + '</span> 年龄：<span>' + arr[i].age + '</span>';
+//将创建好的li元素插入到ul中
+    oUl.appendChild(oLi);
+    }
+    
+}
+function fF(status){
+    alert("shibai");
+}
+
+function ajax(url) {
+    // if(fS==null){
+    //     fS = fnSucc;
+    // }
+    // if(fF == null){
+    //     fF = fnFaild;
+    // }
+    console.log("sssssss")
     var oAjax = new XMLHttpRequest();
-    oAjax.onreadystatechange = function (){
-    if(oAjax.readyState == 4 && oAjax.status ==200 ){
-    alert(oAjax.responseText);
-    }
-    }
-    oAjax.open('GET', '1.cgi', true);
+    oAjax.open('GET', url, true);
     oAjax.send();
+    oAjax.onreadystatechange = function () {
+        if (oAjax.readyState == 4) {
+            if (oAjax.status == 200) {
+                fS(oAjax.responseText);
+            }
+            else {
+                if (fS) {
+                    fF(oAjax.status);
+                }
+            }
+        }
+    };
 }
