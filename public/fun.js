@@ -321,3 +321,15 @@ function starttime() {
 function endtime() {
     clearTimeout(t);
 }
+
+
+function ajax(){
+    var oAjax = new XMLHttpRequest();
+    oAjax.onreadystatechange = function (){
+    if(oAjax.readyState == 4 && oAjax.status ==200 ){
+    alert(oAjax.responseText);
+    }
+    }
+    oAjax.open('GET', '1.cgi', true);
+    oAjax.send();
+}

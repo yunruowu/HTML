@@ -18,33 +18,28 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var path = require('path');
 // console.log(path)
 app.use(express.static(path.join(__dirname, 'public')));
-var dir = __dirname+'/public/';
+// var dir = __dirname+'/public/';
 // // app.use('/public', express.static('public'));
 
 // app.use('/public', express.static('public'));
-var identityKey = 'skey';
+
 
 app.use(session({
-    name : identityKey,
     secret: 'dev',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 100*1000 } //30 天免登陆
+    cookie: { maxAge: 1*1000 } //30 天免登陆
 }));
 
 
 
 
 app.get('/', function (req, res) {
-    
     console.log("zhuye")
     if(req.session.username){  //判断session 状态，如果有效，则返回主页，否则转到登录页面
-        console.log(req.session.username)
-        console.log("zhijiedenglu")
-        res.redirect('/main');
+        res.render('index.html',{username : req.session.username});
     }else{
-        console.log(req.session.username)
-        res.redirect('/login');
+        res.redirect('login');
     }
     // if (req.cookies.isVisit) {
     //     console.log(req.cookies);
@@ -54,9 +49,6 @@ app.get('/', function (req, res) {
     //     res.send("欢迎第一次访问");
     // }
 })
-
-
-
 
 app.post('/', function (req, res) {
     console.log("zhuye")
@@ -78,7 +70,6 @@ app.post('/', function (req, res) {
 app.post('/logout', function (req, res) {
     req.session.username = null; // 删除session
     console.log("登出");
-    res.clearCookie(identityKey);
     res.sendFile(dir +'login.html')
 });
 
@@ -122,10 +113,6 @@ app.get('/login',function(req,res){
     res.sendFile( __dirname + "/public/" + "login.html" );
 })
 
-app.get('/main',function(req,res){
-    console.log("get main")
-    res.sendFile( __dirname + "/public/" + "main.html" );
-})
 
 
 app.post("/login", urlencodedParser,function (req, res) {
@@ -150,9 +137,9 @@ app.post("/login", urlencodedParser,function (req, res) {
                 // res.sendFile('/HTML/snake/theme.css');
                 // res.sendFile('/HTML/snake/fun.js');
                 console.log(__dirname)
-                res.sendFile(dir +'main.html');
+                // res.sendFile(dir +'index.html');?
                 req.session.username = username;
-                console.log(req.session.username);
+                res.render('/');
             }
             else{
                 res.send("登录失败:密码错误！");
