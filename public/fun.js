@@ -335,46 +335,52 @@ function endtime() {
 // }
 
 
-function fS(item){
-    var arr =  eval(item);
+ function fS(item) {
+    var arr = eval(item);
+    alert(arr)
     // var arr = eval(item);
-//循环遍历返回的对象
+    //循环遍历返回的对象
     alert("cheng")
-    for(var i=0; i<arr.length; i++)
-    {
-     
-     var oli=document.createElement('li'); 
-    //  oli.innerHTML='姓名：<strong>' +=arr[i].user='</ strong> 性别：<span>' + arr[i].sex + '</span> 年龄：<span>' + arr[i].age + '</span>';
-//将创建好的li元素插入到ul中
-    oUl.appendChild(oLi);
+    for (var i = 0; i < arr.length; i++) {
+        var oUl = document.getElementById('u');
+        var oLi = document.createElement('li');
+        oLi.innerHTML = '姓名：<strong>' + arr[i].user + '</strong> 性别：<span>' + arr[i].sex + '</span> 年龄：<span>' + arr[i].age + '</span>';
+        //将创建好的li元素插入到ul中
+        oUl.appendChild(oLi);
     }
-    
+
 }
-function fF(status){
+function fF(status) {
     alert("shibai");
 }
 
 function ajax(url) {
-    // if(fS==null){
-    //     fS = fnSucc;
-    // }
-    // if(fF == null){
-    //     fF = fnFaild;
-    // }
     console.log("sssssss")
+    // if (fS == null) {
+    //     fS = fnSucc();
+    // }
+    // if (fF == null) {
+    //     fF = fnFaild();
+    // }
+    
     var oAjax = new XMLHttpRequest();
+    alert(url);
+    alert("123");
     oAjax.open('GET', url, true);
+    
     oAjax.send();
     oAjax.onreadystatechange = function () {
         if (oAjax.readyState == 4) {
             if (oAjax.status == 200) {
+                alert(oAjax.responseText)
                 fS(oAjax.responseText);
             }
             else {
-                if (fS) {
+                if (fF) {
                     fF(oAjax.status);
                 }
             }
         }
     };
+    
 }

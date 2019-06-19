@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-">
+    <title>AJAX 读取JSON</title>
+    <script src="js/ajax.js"></script>
+    <script>
+        window.onload = function () {
+            var oBtn = document.getElementById('btn');
+            var oUl = document.getElementById('u');
+            oBtn.onclick = function () {
+                ajax('data.json?t=' + new Date().getTime(), function (str) {
+                    alert(str)
+                    console.log("chengg")
+                    var arr = eval(str);
+                    //循环遍历返回的对象
+                    for (var i = 0; i < arr.length; i++) {
+                        //每次循环的时候创建一个li元素
+                        var oLi = document.createElement('li');
+                        //向li元素插入内容
+                        oLi.innerHTML = '姓名：<strong>' + arr[i].user + '</strong> 性别：<span>' + arr[i].sex + '</span> 年龄：<span>' + arr[i].age + '</span>';
+                        //将创建好的li元素插入到ul中
+                        oUl.appendChild(oLi);
+                    }
+                }, function () {
+                    alert('失败');
+                });
+            };
+        };
+    </script>
+</head>
+
+<body>
+    <input id="btn" type="button" name="user" value="读取">
+    <!-- 点击按钮生成json数据列表 -->
+    <ul id="u">
+        <!-- <li>姓名：<strong>小白</strong> 性别：<span>男</span> 年龄：<span></span></li> -->
+    </ul>
+</body>
+
+</html>
