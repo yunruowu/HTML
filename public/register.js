@@ -23,6 +23,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/public', express.static('public'));
 
+function hash(str){
+    let md5 = crypto.createHash('md5');
+    md5.update(str); // update数据
+    let result = md5.digest('hex'); // 十六进制输出
+    return result;
+
+}
+
+
 
 app.use(session({
     secret: 'dev',
@@ -97,6 +106,7 @@ app.post("/register",  urlencodedParser, function (req, res) {
             db.serialize(function () {
                 //向数据库写入注册信息
                 console.log("用户不存在,注册新用户！");
+                ped = hash(pwd);
                 db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, pwd]);
                 console.log("注册成功！")
             });
@@ -118,6 +128,7 @@ app.get('/login',function(req,res){
 app.post("/login", urlencodedParser,function (req, res) {
     var username = req.body.username;
     var pwd = req.body.password;
+    pwd = hash(pwd);
     console.log("Register:", username, pwd);
     var db = new sqlite3.Database('./DATAB/TESTDB.db');
     db.get("SELECT * FROM users WHERE username = ?", [username], function (err, row) {

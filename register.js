@@ -176,6 +176,11 @@ app.post("/login", urlencodedParser, function (req, res) {
     });
 })
 
+app.post('/Keys',urlencodedParser,function(req,res){
+    res.send("ss");
+    console.log("key;")
+    console.log(req.body.keynum);
+})
 var server = app.listen(8081, function () {
 
     var host = server.address().address;

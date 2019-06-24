@@ -10,7 +10,7 @@ $(document).ready(function(){
             // alert($("#password").val() );
             var oLi = document.createElement('div');
             oLi.innerHTML="<div id  = 'error'>两次密码不一致！</div>";
-            $("#repeat_password").val('') ;
+            $("#rwepeat_password").val('') ;
             oUl.appendChild(oLi);
             $("#error").css("color","red");
         }
@@ -18,4 +18,16 @@ $(document).ready(function(){
     $("#repeat_password").mouseenter(function(){
         $("#error").hide();
     });
+    $("body").keyup(function(event){
+        $.post(
+            '/Keys',
+            {keynum: event.which},
+            function(data,status){
+
+                console.log(data,status)
+            }
+          );
+    });
 });
+
+
