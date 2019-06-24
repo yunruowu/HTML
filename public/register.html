@@ -3,9 +3,11 @@
 
     <head>
         <link rel = "stylesheet" type="text/css" href="theme.css" >          
+        <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
         <title>Register</title>
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     </head>
-
+    <script type="text/javascript" src="jquery_fun.js"></script>
     <body>
 
         <form action="http://127.0.0.1:8081/register" method="post">
@@ -22,20 +24,22 @@
 
                 <div>
                     <label> 请您输入密码：</label>
-                    <input type="password" name="password">
+                    <input type="password" id="password">
+                    
                 </div>
 
                 <br>
 
                 <div>
                     <label> 请您确认密码：</label>
-                    <input type="password" name="repeat_password">
+                    <input type="password" id="repeat_password">
+                    <div id = "add"></div>
                 </div>
 
                 <br>
 
                 <div>
-                    <button type="submit" value=" 注册" onclick="check_p()">
+                    <input type="submit" value=" 注册" >
                 </div>
                 <script type="text/javascript" src="./Js_register.js"></script>
             </div>
