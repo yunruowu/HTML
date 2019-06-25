@@ -59,16 +59,23 @@ function move(){
         '/data',
         function(data,status){
             map = data;
-            $(".body").remove();
+            $(".body1").remove();
+            $(".body2").remove();
             $("#snake1").remove();
             for (var i = 0;i<16;i++){
                 for(var j = 0;j<24;j++){
                     if(map[i][j]==1){
-                        console.log(i,j)
-                        var addH = " <div id = 'ssss' class = 'body' style='left:"+j*20+"px;top:" +i*20+"px;'></div>"
+                        console.log("snake1")
+                        var addH = " <div id = 'ssss' class = 'body1' style='left:"+j*20+"px;top:" +i*20+"px;'></div>"
                         $("#map").append(addH);
                     }
                     if(map[i][j]==2){
+                        console.log("snake2")
+                        var addH = " <div id = 'ssss' class = 'body2' style='left:"+j*20+"px;top:" +i*20+"px;'></div>"
+                        $("#map").append(addH);
+                    }
+                    
+                    if(map[i][j]==5){
                         console.log(i,j)
                         var addH = " <div id = 'snake1'  style='left:"+j*20+"px;top:" +i*20+"px;'></div>"
                         $("#map").append(addH);

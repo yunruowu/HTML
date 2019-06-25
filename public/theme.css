@@ -20,7 +20,7 @@ h1{
     top: 20px; */
     
 }
-.body{  
+.body1{  
     width: 20px;
     height: 20px;
     background-color: #120f88;
@@ -29,7 +29,15 @@ h1{
     top: 20px; */
     
 }
-
+.body2{  
+    width: 20px;
+    height: 20px;
+    background-color: #267e47;
+    position: absolute;
+    /* left:40px;
+    top: 20px; */
+    
+}
 /* #snake{
     width: 20px;
     height: 20px;

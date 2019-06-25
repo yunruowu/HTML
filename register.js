@@ -37,7 +37,7 @@ app.use(session({
     secret: 'dev',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 100 * 1000 } //30 天免登陆
+    cookie: { maxAge: 1000 * 1000 } //30 天免登陆
 }));
 
 
@@ -166,7 +166,7 @@ app.post("/login", urlencodedParser, function (req, res) {
                 console.log("登录成功");
                 res.sendFile(dir + 'main.html');
                 req.session.username = username;
-                user[user.length]=username;
+                user[user.length] = username;
                 // console.log(req.session.username);
             }
             else {
@@ -180,8 +180,8 @@ app.post("/login", urlencodedParser, function (req, res) {
 
 
 
-var destination = 65;
-var tempdest = [65,65];
+var destination = [65, 65];
+var tempdest = [65, 65];
 var map = new Array();
 var snake = []
 //存储整个地图
@@ -195,135 +195,142 @@ for (var i = 0; i < 16; i++) {
 map[12][14] = 1;
 map[12][13] = 1;
 map[12][12] = 1;
-var head = [12, 14];
-snake[1] = [12, 13];
-snake[2] = [12, 12];
-snake[0] = head;
+var head = [[12, 12], [2, 12]];
+
+snake[0] = [head[0], [12, 13], [12, 14]];
+snake[1] = [head[1],[2,13],[2,14]];
 var y = Math.ceil(((Math.random() * 24) % 24) - 1);
 var x = Math.ceil(((Math.random() * 16) % 16) - 1);
-map[x][y] = 2;
+map[x][y] = 5;
 app.post('/Keys', urlencodedParser, function (req, res) {
     // map [2][3] =1;
     res.send(map);
     console.log(req.session.username);
-    for(var i = 0;i<user.length;i++){
-        if(req.session.username == user[i]){
+    for (var i = 0; i < user.length; i++) {
+        if (req.session.username == user[i]) {
             tempdest[i] = req.body.keynum;
         }
     }
-   
+
 
 
 })
+var key_num = [0, 0];
+function getmap(num) {
+    var len = []
+    len[num] = snake[num].length;
+    var tem = [[0, 0], [0, 0]];
 
-var key_num = 0;
-setInterval(
-    function move() {
-        // console.log("move", head, snake);
-        var len = snake.length;
-        var tem = [];
-        tem[0] = snake[len - 1][0];
-        tem[1] = snake[len - 1][1];
-        for (var i = len - 1; i > 0; i = i - 1) {
-            snake[i][0] = snake[i - 1][0];
-            snake[i][1] = snake[i - 1][1];
-        }
-
-
-        // console.log(destination, tempdest);
-        if (key_num == 0) {
-            if (tempdest[0] == 68) {//→
-                if (destination == 65) {
-                    key_num = 0;
-                }
-                else {
-                    destination = tempdest[0];
-                }
-            }
-            if (tempdest[0] == 65) {//→
-                if (destination == 68) {
-                    key_num = 0;
-                }
-                else {
-                    destination = tempdest[0];
-                }
-            } 
-            if (tempdest[0] == 87) {//→
-                if (destination == 83) {
-                    key_num = 0;
-                }
-                else {
-                    destination = tempdest[0];
-                }
-            }
-            if (tempdest[0] == 83) {//→
-                if(destination ==  87){
-                    key_num = 0;
-                }
-                else{
-                   destination = tempdest[0]; 
-                }
-            }
-
-           
-            key_num++;
-        }
-        if (destination == 65) {//→
-
-            
-            head[0] = head[0];
-            head[1] = head[1] - 1;
-
-        }
-        if (destination == 68) {//←
-            
-            head[0] = head[0];
-            head[1] = head[1] + 1;
-
-        }
-        if (destination == 83) {//↑
-            
-            head[0] = head[0] + 1;
-            head[1] = head[1];
-
-        }
-        if (destination == 87) {//↓
-            
-            head[0] = head[0] - 1;
-            head[1] = head[1];
-
-        }
-        key_num = 0
-
-
-        // snake[snake.length][1]= ;
-        snake[0] = head;
-        for (var i = 0; i < 16; i++) {
-            for (var j = 0; j < 24; j++) {
-                if (map[i][j] == 1) {
-                    map[i][j] = 0;
-                }
-            }
-
-        }
-        console.log(head);
-        if(head[0]<0||head[0]>=16||head[1]>=24||head[1]<0){
-            console.log("失败")
-        }
-        if (map[head[0]][head[1]] == 2) {//吃子
-            map[head[0]][head[1]] = 0;
-            var y = Math.ceil(((Math.random() * 24) % 24) - 1);
-            var x = Math.ceil(((Math.random() * 16) % 16) - 1);
-            map[x][y] = 2;
-            snake[snake.length] = [tem[0], tem[1]];
-        }
-        for (var i = 0; i < snake.length; i++) {
-            map[snake[i][0]][snake[i][1]] = 1;
-            // console.log(snake[i][0], snake[i][1])
-        }
+    tem[num][0] = snake[num][len[num] - 1][0];
+    tem[num][1] = snake[num][len[num] - 1][1];
+    for (var i = len[num] - 1; i > 0; i = i - 1) {
+        snake[num][i][0] = snake[num][i - 1][0];
+        snake[num][i][1] = snake[num][i - 1][1];
     }
 
-    , 500);
+
+    // console.log(destination[num], tempdest);
+    if (key_num[num] == 0) {
+        if (tempdest[num] == 68) {//→
+            if (destination[num] == 65) {
+                key_num[num] = 0;
+            }
+            else {
+                destination[num] = tempdest[num];
+            }
+        }
+        if (tempdest[num] == 65) {//→
+            if (destination[num] == 68) {
+                key_num[num] = 0;
+            }
+            else {
+                destination[num] = tempdest[num];
+            }
+        }
+        if (tempdest[num] == 87) {//→
+            if (destination[num] == 83) {
+                key_num[num] = 0;
+            }
+            else {
+                destination[num] = tempdest[num];
+            }
+        }
+        if (tempdest[num] == 83) {//→
+            if (destination[num] == 87) {
+                key_num[num] = 0;
+            }
+            else {
+                destination[num] = tempdest[num];
+            }
+        }
+
+
+        key_num[num]++;
+    }
+    if (destination[num] == 65) {//→
+
+
+        head[num][0] = head[num][0];
+        head[num][1] = head[num][1] - 1;
+
+    }
+    if (destination[num] == 68) {//←
+
+        head[num][0] = head[num][0];
+        head[num][1] = head[num][1] + 1;
+
+    }
+    if (destination[num] == 83) {//↑
+
+        head[num][0] = head[num][0] + 1;
+        head[num][1] = head[num][1];
+
+    }
+    if (destination[num] == 87) {//↓
+
+        head[num][0] = head[num][0] - 1;
+        head[num][1] = head[num][1];
+
+    }
+    key_num[num] = 0
+
+
+    // snake[num][snake[num].length][1]= ;
+    snake[num][0] = head[num];
+    for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 24; j++) {
+            if (map[i][j] != 5&&map[i][j]==num+1) {
+                map[i][j] = 0;
+            }
+        }
+
+    }
+    console.log(head[num]);
+    if (head[num][0] < 0 || head[num][0] >= 16 || head[num][1] >= 24 || head[num][1] < 0) {
+        console.log("失败")
+    }
+    if (map[head[num][0]][head[num][1]] == 5) {//吃子
+        map[head[num][0]][head[num][1]] = 0;
+        var y = Math.ceil(((Math.random() * 24) % 24) - 1);
+        var x = Math.ceil(((Math.random() * 16) % 16) - 1);
+        map[x][y] = 5;
+        snake[num][snake[num].length] = [tem[num][0], tem[num][1]];
+    }
+    for (var i = 0; i < snake[num].length; i++) {
+        map[snake[num][i][0]][snake[num][i][1]] = num + 1;
+        // console.log(snake[num][i][0], snake[num][i][1])
+    }
+}
+
+setInterval(
+    function move() {
+        // console.log("move", head[num], snake[num]);
+
+        getmap(0);
+        getmap(1);
+    }
+
+    , 1000);
 
 app.post('/data', urlencodedParser, function (req, res) {
     // for (var i = 0;i<16;i++){
