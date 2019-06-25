@@ -139,7 +139,7 @@ app.get('/main', function (req, res) {
     res.sendFile(__dirname + "/public/" + "main.html");
 })
 
-
+var user = []
 app.post("/login", urlencodedParser, function (req, res) {
     var username = req.body.username;
     var pwd = req.body.password;
@@ -166,6 +166,7 @@ app.post("/login", urlencodedParser, function (req, res) {
                 console.log("登录成功");
                 res.sendFile(dir + 'main.html');
                 req.session.username = username;
+                user[user.length]=username;
                 // console.log(req.session.username);
             }
             else {
@@ -176,16 +177,174 @@ app.post("/login", urlencodedParser, function (req, res) {
     });
 })
 
-app.post('/Keys',urlencodedParser,function(req,res){
-    res.send("ss");
-    console.log("key;")
-    console.log(req.body.keynum);
+
+
+
+var destination = 65;
+var tempdest = [65,65];
+var map = new Array();
+var snake = []
+//存储整个地图
+for (var i = 0; i < 16; i++) {
+    map[i] = new Array()
+    for (var j = 0; j < 24; j++) {
+        map[i][j] = 0;
+    }
+
+}
+map[12][14] = 1;
+map[12][13] = 1;
+map[12][12] = 1;
+var head = [12, 14];
+snake[1] = [12, 13];
+snake[2] = [12, 12];
+snake[0] = head;
+var y = Math.ceil(((Math.random() * 24) % 24) - 1);
+var x = Math.ceil(((Math.random() * 16) % 16) - 1);
+map[x][y] = 2;
+app.post('/Keys', urlencodedParser, function (req, res) {
+    // map [2][3] =1;
+    res.send(map);
+    console.log(req.session.username);
+    for(var i = 0;i<user.length;i++){
+        if(req.session.username == user[i]){
+            tempdest[i] = req.body.keynum;
+        }
+    }
+   
+
+
 })
+
+var key_num = 0;
+setInterval(
+    function move() {
+        // console.log("move", head, snake);
+        var len = snake.length;
+        var tem = [];
+        tem[0] = snake[len - 1][0];
+        tem[1] = snake[len - 1][1];
+        for (var i = len - 1; i > 0; i = i - 1) {
+            snake[i][0] = snake[i - 1][0];
+            snake[i][1] = snake[i - 1][1];
+        }
+
+
+        // console.log(destination, tempdest);
+        if (key_num == 0) {
+            if (tempdest[0] == 68) {//→
+                if (destination == 65) {
+                    key_num = 0;
+                }
+                else {
+                    destination = tempdest[0];
+                }
+            }
+            if (tempdest[0] == 65) {//→
+                if (destination == 68) {
+                    key_num = 0;
+                }
+                else {
+                    destination = tempdest[0];
+                }
+            } 
+            if (tempdest[0] == 87) {//→
+                if (destination == 83) {
+                    key_num = 0;
+                }
+                else {
+                    destination = tempdest[0];
+                }
+            }
+            if (tempdest[0] == 83) {//→
+                if(destination ==  87){
+                    key_num = 0;
+                }
+                else{
+                   destination = tempdest[0]; 
+                }
+            }
+
+           
+            key_num++;
+        }
+        if (destination == 65) {//→
+
+            
+            head[0] = head[0];
+            head[1] = head[1] - 1;
+
+        }
+        if (destination == 68) {//←
+            
+            head[0] = head[0];
+            head[1] = head[1] + 1;
+
+        }
+        if (destination == 83) {//↑
+            
+            head[0] = head[0] + 1;
+            head[1] = head[1];
+
+        }
+        if (destination == 87) {//↓
+            
+            head[0] = head[0] - 1;
+            head[1] = head[1];
+
+        }
+        key_num = 0
+
+
+        // snake[snake.length][1]= ;
+        snake[0] = head;
+        for (var i = 0; i < 16; i++) {
+            for (var j = 0; j < 24; j++) {
+                if (map[i][j] == 1) {
+                    map[i][j] = 0;
+                }
+            }
+
+        }
+        console.log(head);
+        if(head[0]<0||head[0]>=16||head[1]>=24||head[1]<0){
+            console.log("失败")
+        }
+        if (map[head[0]][head[1]] == 2) {//吃子
+            map[head[0]][head[1]] = 0;
+            var y = Math.ceil(((Math.random() * 24) % 24) - 1);
+            var x = Math.ceil(((Math.random() * 16) % 16) - 1);
+            map[x][y] = 2;
+            snake[snake.length] = [tem[0], tem[1]];
+        }
+        for (var i = 0; i < snake.length; i++) {
+            map[snake[i][0]][snake[i][1]] = 1;
+            // console.log(snake[i][0], snake[i][1])
+        }
+    }
+
+    , 500);
+
+app.post('/data', urlencodedParser, function (req, res) {
+    // for (var i = 0;i<16;i++){
+    //     for(var j = 0;j<24;j++){
+    //         if(map[i][j]==1){
+    //             console.log(i,j)
+
+    //         }
+    //     }
+    // }
+    res.send(map);
+    // console.log("key;")
+    // console.log(req.body.keynum);
+
+})
+
 var server = app.listen(8081, function () {
 
     var host = server.address().address;
     var port = server.address().port;
 
-    console.log("应用实例，访问地址为 http://%s:%s", host, port);   
+    console.log("应用实例，访问地址为 http://%s:%s", host, port);
 
 })

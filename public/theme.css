@@ -20,6 +20,15 @@ h1{
     top: 20px; */
     
 }
+.body{  
+    width: 20px;
+    height: 20px;
+    background-color: #120f88;
+    position: absolute;
+    /* left:40px;
+    top: 20px; */
+    
+}
 
 /* #snake{
     width: 20px;
@@ -42,8 +51,8 @@ h1{
 }
 /* 蛇的身体 */
 #snake1{
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     position: absolute;
     background-color: blueviolet;
     left:0px;

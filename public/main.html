@@ -5,8 +5,10 @@
             <link rel = "stylesheet" type="text/css" href="./theme.css" >
             <script src="jquery-1.10.2.min.js"></script>
             <title>Hello world demo</title>
+            <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     </head>
     <!-- 获取键盘事件 -->
+    <script type="text/javascript" src="jquery_fun.js"></script>
     <div onkeydown="getDestination(event)"></div>
     <body id="xx">
         
@@ -46,17 +48,20 @@
                     <button id ="right" class="span" onclick="right()">D</button>
                 </div>
                 <!-- 蛇和食物 -->
-                <div id = "food" style="left: 40px;top: 40px;"></div>
+                <!-- <div id = "food" style="left: 40px;top: 40px;"></div> -->
                 <div id = "snake"></div>
             </div>
         </h2>
-        <script type="text/javascript" src="./fun.js"></script>
+        <script type="text/javascript" src="localfunction.js"></script>
         <h2> 
             <div id = "select">
-                <!-- 开始和暂停 -->
-                <button class="div" onclick="start()">开始</button>
-                <button class="div" onclick="ajax('play.json?t=' + new Date().getTime())">准备</button>
-                <button class="div" onclick="end()">暂停</button> 
+                <!-- 开始和暂停 --> 
+                <button class="div" id = 'ready' onclick="ajax('play.json?t=' + new Date().getTime())">准备</button>
+                <span id = "S_and_S">
+                    <button class="div" onclick="start()">开始</button>
+                    <button class="div" onclick="end()">暂停</button> 
+                </span>
+                
                 <!-- 难度选择 -->
                 <span class="select">level:</span>
                 <select class="select" id = "seltable">
