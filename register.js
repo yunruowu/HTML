@@ -138,8 +138,11 @@ app.get('/login', function (req, res) {
 })
 
 app.get('/main', function (req, res) {
-    console.log("从主页跳转get main")
-    console.log("ss", __dirname)
+    if(req.session.username==undefined){
+        res.redirect('/login')
+    }
+    console.log("从主页跳转get main");
+    console.log("ss", __dirname);
     res.sendFile(__dirname + "/public/" + "main.html");
 })
 
@@ -221,11 +224,13 @@ score = [0, 0, 0];
 
 var head = [
     [12, 12],
-    [2, 12]
+    [2, 12],
+    [5,12]
 ];
 var startGame;
 snake[0] = [head[0]];
 snake[1] = [head[1]];
+snake[2] = [head[2]];
 var y = Math.ceil(((Math.random() * 24) % 24) - 1);
 var x = Math.ceil(((Math.random() * 16) % 16) - 1);
 map[x][y] = 5;
@@ -247,10 +252,12 @@ function restart() {
     }
     head = [
         [12, 12],
-        [2, 12]
+        [2, 12],
+        [5,12]
     ];
     snake[0] = [head[0]];
     snake[1] = [head[1]];
+    snake[2] = [head[2]];
     score = [0, 0, 0];
     y = Math.ceil(((Math.random() * 24) % 24) - 1);
     x = Math.ceil(((Math.random() * 16) % 16) - 1);
@@ -275,18 +282,20 @@ app.post('/Keys', urlencodedParser, function (req, res) {
         }
     }
 })
-var key_num = [0, 0];
+var key_num = [0, 0,0];
 
 function getmap(num) {
     var len = []
     len[num] = snake[num].length;
     var tem = [
         [0, 0],
-        [0, 0]
+        [0, 0],
+        [0,0]
     ];
 
     tem[num][0] = snake[num][len[num] - 1][0];
     tem[num][1] = snake[num][len[num] - 1][1];
+    // tem[num][1] = snake[num][len[num] - 1][1];
     for (var i = len[num] - 1; i > 0; i = i - 1) {
         snake[num][i][0] = snake[num][i - 1][0];
         snake[num][i][1] = snake[num][i - 1][1];
@@ -399,12 +408,13 @@ var ready = 0;
 app.post('/Ready', urlencodedParser, function (req, res) {
     ready++;
     console.log(ready, req.session.username);
-    if (ready == 2) {
+    if (ready == 3) {
         startGame = setInterval(
             function move() {
                 // console.log("move", head[num], snake[num]);
                 getmap(0);
                 getmap(1);
+                getmap(2);
             }, 1000);
         res.send("ok");
     }
@@ -417,7 +427,9 @@ app.post('/startgame', urlencodedParser, function (req, res) {
         function move() {
             // console.log("move", head[num], snake[num]);
             getmap(0);
+            getmap(2);
             getmap(1);
+
         }, 1000);
 })
 app.post('/restart', urlencodedParser, function (req, res) {
@@ -428,6 +440,7 @@ app.post('/restart', urlencodedParser, function (req, res) {
             // console.log("move", head[num], snake[num]);
             getmap(0);
             getmap(1);
+            getmap(2);
         }, 1000);
 })
 

@@ -1,7 +1,6 @@
-var s = [0,1,1,1,1,1]
-console.log(s);
-s.length = 0
-console.log(s[1])
-s[0] = 1;
-s[1] = 2;
-console.log(s)
+// $.inArray([i, j], head)
+var head = [[1,2],[1,3],[1,4]];
+var s = [1,2,3,4]
+if($.inArray(1, s) == -1){
+    console.log("sss")
+}

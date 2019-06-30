@@ -33,10 +33,13 @@ h1{
     width: 20px;
     height: 20px;
     background-color: #267e47;
-    position: absolute;
-    /* left:40px;
-    top: 20px; */
-    
+    position: absolute;    
+}
+.body2{  
+    width: 20px;
+    height: 20px;
+    background-color: #26c5da;
+    position: absolute;    
 }
 /* #snake{
     width: 20px;
@@ -51,7 +54,7 @@ h1{
 #snake1{
     width: 18px;
     height: 18px;
-    background: rgb(245, 72, 230);
+    background: rgb(125, 228, 28);
     position: absolute;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
@@ -61,7 +64,16 @@ h1{
 #snake2{
     width: 18px;
     height: 18px;
-    background: rgb(245, 72, 230);
+    background: rgb(223, 37, 176);
+    position: absolute;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+#snake3{
+    width: 18px;
+    height: 18px;
+    background: rgb(236, 174, 58);
     position: absolute;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
