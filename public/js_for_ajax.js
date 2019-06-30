@@ -13,7 +13,7 @@ function fS(item) {
         oUl.appendChild(oLi);
     }
 
-
+}
 function fF(status) {
     alert("shibai");
 }
@@ -21,7 +21,6 @@ function fF(status) {
 function ajax(url) {
     var oAjax = new XMLHttpRequest();
     oAjax.open('GET', url, true);
-
     oAjax.send();
     oAjax.onreadystatechange = function () {
         if (oAjax.readyState == 4) {
@@ -36,5 +35,4 @@ function ajax(url) {
             }
         }
     };
-
 }

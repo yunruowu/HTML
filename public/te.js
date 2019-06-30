@@ -1,11 +1,7 @@
-var express = require('express');
-var app = express();
-
-app.use(express.static('public'));
-app.post('/test', urlencodedParser,function(){
-    res.send("sss")
-}
-)
-app.listen(8081, () => {
-    console.log('start: 5000')
-})
+var s = [0,1,1,1,1,1]
+console.log(s);
+s.length = 0
+console.log(s[1])
+s[0] = 1;
+s[1] = 2;
+console.log(s)

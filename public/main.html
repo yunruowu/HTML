@@ -30,7 +30,7 @@
                         <span id = "play1" >玩家1:</span>                                                 
                         <span id = "out1"></span>
                         <span  id = "play2">玩家2:</span>
-                        <span id = "out1"></span>
+                        <span id = "out2"></span>
                     </div>
                    
             </h2>
@@ -56,11 +56,12 @@
         <h2> 
             <div id = "select">
                 <!-- 开始和暂停 --> 
-                <button class="div" id = 'ready' onclick="ajax('play.json?t=' + new Date().getTime())">准备</button>
+                <button class="div" id = 'ready' >准备</button>
                 <span id = "S_and_S">
-                    <button class="div" onclick="start()">开始</button>
-                    <button class="div" onclick="end()">暂停</button> 
+                    <button class="div" id = "start" onclick="start()">开始</button>
+                    <button class="div" id = "stop" onclick="end()">暂停</button> 
                 </span>
+                 <button class="div" id = "restart" >重新开始</button>
                 
                 <!-- 难度选择 -->
                 <span class="select">level:</span>

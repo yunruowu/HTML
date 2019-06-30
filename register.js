@@ -1,5 +1,3 @@
-
-
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -12,7 +10,9 @@ var session = require('express-session');
 
 
 var fs = require('fs');
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({
+    extended: false
+})
 //   
 var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,7 +37,9 @@ app.use(session({
     secret: 'dev',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 1000 * 1000 } //30 天免登陆
+    cookie: {
+        maxAge: 1000 * 1000
+    } //30 天免登陆
 }));
 
 
@@ -46,7 +48,7 @@ app.use(session({
 app.get('/', function (req, res) {
 
     console.log("通过主页登录");
-    if (req.session.username) {  //判断session 状态，如果有效，则返回主页，否则转到登录页面
+    if (req.session.username) { //判断session 状态，如果有效，则返回主页，否则转到登录页面
         console.log(req.session.username);
         console.log("已经登录了，直接跳转主界面");
         res.redirect('/main');
@@ -130,17 +132,20 @@ app.post("/register", urlencodedParser, function (req, res) {
 
 
 app.get('/login', function (req, res) {
-    console.log("从主页跳转：get login，跳转到post login")
+    console.log("从主页跳转：get login，跳转到post login");
+    console.log("ss", __dirname);
     res.sendFile(__dirname + "/public/" + "login.html");
 })
 
 app.get('/main', function (req, res) {
     console.log("从主页跳转get main")
+    console.log("ss", __dirname)
     res.sendFile(__dirname + "/public/" + "main.html");
 })
 
 var user = []
 app.post("/login", urlencodedParser, function (req, res) {
+    // console.log("postlogin")
     var username = req.body.username;
     var pwd = req.body.password;
 
@@ -148,7 +153,7 @@ app.post("/login", urlencodedParser, function (req, res) {
     console.log("lofgin:", username, pwd);
     var db = new sqlite3.Database('./DATAB/TESTDB.db');
     db.get("SELECT * FROM users WHERE username = ?", [username], function (err, row) {
-        console.log("sss");
+        // console.log("sss");
         // console.log(err);
         // console.log(row);
         // 没有注册了
@@ -164,12 +169,13 @@ app.post("/login", urlencodedParser, function (req, res) {
                 // res.sendFile('/HTML/snake/theme.css');
                 // res.sendFile('/HTML/snake/fun.js');
                 console.log("登录成功");
-                res.sendFile(dir + 'main.html');
+
+                // res.sendFile(dir + 'main.html');
                 req.session.username = username;
                 user[user.length] = username;
+                res.redirect('/main');
                 // console.log(req.session.username);
-            }
-            else {
+            } else {
                 res.send("登录失败:密码错误！");
             }
         }
@@ -178,13 +184,31 @@ app.post("/login", urlencodedParser, function (req, res) {
 })
 
 
+app.post('/getusername', urlencodedParser, function (req, res) {
+    var username = req.body.username1;
+    var db = new sqlite3.Database('./DATAB/TESTDB.db');
+    console.log(username);
+    db.get("SELECT * FROM users WHERE username = ?", [username], function (err, row) {
 
+        // console.log(err);
+        // console.log(row);
+        // 没有注册了
+        if (row == undefined) {
+            res.send("OK");
+            console.log("ok");
+        } else {
+            res.send("err");
+            console.log("err")
+        }
+        db.close();
+    })
+})
 
-var destination = [65, 65];
-var tempdest = [65, 65];
+var destination = [65, 65, 65];
+var tempdest = [65, 65, 65];
 var map = new Array();
 var snake = [];
-var win ;
+var win;
 //存储整个地图
 for (var i = 0; i < 16; i++) {
     map[i] = new Array()
@@ -193,43 +217,73 @@ for (var i = 0; i < 16; i++) {
     }
 
 }
-score=[0,0];
-map[12][14] = 1;
-map[12][13] = 1;
-map[12][12] = 1;
-var head = [[12, 12], [2, 12]];
+score = [0, 0, 0];
 
-snake[0] = [head[0], [12, 13], [12, 14]];
-snake[1] = [head[1],[2,13],[2,14]];
+var head = [
+    [12, 12],
+    [2, 12]
+];
+var startGame;
+snake[0] = [head[0]];
+snake[1] = [head[1]];
 var y = Math.ceil(((Math.random() * 24) % 24) - 1);
 var x = Math.ceil(((Math.random() * 16) % 16) - 1);
 map[x][y] = 5;
+
+//重新开始
+function restart() {
+    //
+    for (var i = 0; i < 16; i++) {
+        map[i] = new Array()
+        for (var j = 0; j < 24; j++) {
+            map[i][j] = 0;
+        }
+    }
+    win = undefined;
+    // snake[0].length=0;
+    // snake[1].length=0;
+    for (var i = 0; i < snake.length; i++) {
+        snake[i].length = 0
+    }
+    head = [
+        [12, 12],
+        [2, 12]
+    ];
+    snake[0] = [head[0]];
+    snake[1] = [head[1]];
+    score = [0, 0, 0];
+    y = Math.ceil(((Math.random() * 24) % 24) - 1);
+    x = Math.ceil(((Math.random() * 16) % 16) - 1);
+    map[x][y] = 5;
+    destination = [65, 65, 65];
+    tempdest = [65, 65, 65];
+}
 app.post('/Keys', urlencodedParser, function (req, res) {
     // map [2][3] =1;
-    var data = [
-        {
-            "score":score,
-            "users":user,
-            "map":map,
-            "name":req.session.username
-        }
-    ]
+    var data = [{
+        "score": score,
+        "users": user,
+        "map": map,
+        "name": req.session.username
+    }]
     res.send(data);
+    console.log(data, "key");
     console.log(req.session.username);
     for (var i = 0; i < user.length; i++) {
         if (req.session.username == user[i]) {
             tempdest[i] = req.body.keynum;
         }
     }
-
-
-
 })
 var key_num = [0, 0];
+
 function getmap(num) {
     var len = []
     len[num] = snake[num].length;
-    var tem = [[0, 0], [0, 0]];
+    var tem = [
+        [0, 0],
+        [0, 0]
+    ];
 
     tem[num][0] = snake[num][len[num] - 1][0];
     tem[num][1] = snake[num][len[num] - 1][1];
@@ -241,35 +295,31 @@ function getmap(num) {
 
     // console.log(destination[num], tempdest);
     if (key_num[num] == 0) {
-        if (tempdest[num] == 68) {//→
+        if (tempdest[num] == 68) { //→
             if (destination[num] == 65) {
                 key_num[num] = 0;
-            }
-            else {
+            } else {
                 destination[num] = tempdest[num];
             }
         }
-        if (tempdest[num] == 65) {//→
+        if (tempdest[num] == 65) { //→
             if (destination[num] == 68) {
                 key_num[num] = 0;
-            }
-            else {
+            } else {
                 destination[num] = tempdest[num];
             }
         }
-        if (tempdest[num] == 87) {//→
+        if (tempdest[num] == 87) { //→
             if (destination[num] == 83) {
                 key_num[num] = 0;
-            }
-            else {
+            } else {
                 destination[num] = tempdest[num];
             }
         }
-        if (tempdest[num] == 83) {//→
+        if (tempdest[num] == 83) { //→
             if (destination[num] == 87) {
                 key_num[num] = 0;
-            }
-            else {
+            } else {
                 destination[num] = tempdest[num];
             }
         }
@@ -277,26 +327,26 @@ function getmap(num) {
 
         key_num[num]++;
     }
-    if (destination[num] == 65) {//→
+    if (destination[num] == 65) { //→
 
 
         head[num][0] = head[num][0];
         head[num][1] = head[num][1] - 1;
 
     }
-    if (destination[num] == 68) {//←
+    if (destination[num] == 68) { //←
 
         head[num][0] = head[num][0];
         head[num][1] = head[num][1] + 1;
 
     }
-    if (destination[num] == 83) {//↑
+    if (destination[num] == 83) { //↑
 
         head[num][0] = head[num][0] + 1;
         head[num][1] = head[num][1];
 
     }
-    if (destination[num] == 87) {//↓
+    if (destination[num] == 87) { //↓
 
         head[num][0] = head[num][0] - 1;
         head[num][1] = head[num][1];
@@ -309,27 +359,28 @@ function getmap(num) {
     snake[num][0] = head[num];
     for (var i = 0; i < 16; i++) {
         for (var j = 0; j < 24; j++) {
-            if (map[i][j] != 5&&map[i][j]==num+1) {
+            if (map[i][j] != 5 && map[i][j] == num + 1) {
                 map[i][j] = 0;
             }
         }
 
     }
-   
+
     if (head[num][0] < 0 || head[num][0] >= 16 || head[num][1] >= 24 || head[num][1] < 0) {
         console.log("失败");
-        win=user[num];
-        head[num] =[0,0];
+        clearInterval(startGame);
+        win = user[num];
+        head[num] = [0, 0];
         for (var i = 0; i < 16; i++) {
             for (var j = 0; j < 24; j++) {
-                    map[i][j] = 0;   
-            }   
+                map[i][j] = 0;
+            }
         }
         for (var i = 0; i < snake[num].length; i++) {
-            snake[num][i] = [0,0];
+            snake[num][i] = [0, 0];
         }
     }
-    if (map[head[num][0]][head[num][1]] == 5) {//吃子
+    if (map[head[num][0]][head[num][1]] == 5) { //吃子
         score[num]++;
         map[head[num][0]][head[num][1]] = 0;
         var y = Math.ceil(((Math.random() * 24) % 24) - 1);
@@ -345,27 +396,43 @@ function getmap(num) {
 
 
 var ready = 0;
-app.post('/Ready',urlencodedParser,function(req,res){
+app.post('/Ready', urlencodedParser, function (req, res) {
     ready++;
-    if(ready==2){
-        setInterval(
+    console.log(ready, req.session.username);
+    if (ready == 2) {
+        startGame = setInterval(
             function move() {
                 // console.log("move", head[num], snake[num]);
                 getmap(0);
                 getmap(1);
-            }
-        
-            , 1000);
+            }, 1000);
+        res.send("ok");
     }
 })
-// setInterval(
-//     function move() {
-//         // console.log("move", head[num], snake[num]);
-//         getmap(0);
-//         getmap(1);
-//     }
+app.post('/stopgame', urlencodedParser, function (req, res) {
+    clearInterval(startGame);
+})
+app.post('/startgame', urlencodedParser, function (req, res) {
+    startGame = setInterval(
+        function move() {
+            // console.log("move", head[num], snake[num]);
+            getmap(0);
+            getmap(1);
+        }, 1000);
+})
+app.post('/restart', urlencodedParser, function (req, res) {
+    clearInterval(startGame);
+    restart();
+    startGame = setInterval(
+        function move() {
+            // console.log("move", head[num], snake[num]);
+            getmap(0);
+            getmap(1);
+        }, 1000);
+})
 
-//     , 1000);
+//重新设置地图得初值
+
 
 app.post('/data', urlencodedParser, function (req, res) {
     // for (var i = 0;i<16;i++){
@@ -376,16 +443,16 @@ app.post('/data', urlencodedParser, function (req, res) {
     //         }
     //     }
     // }
-    var data = [
-        {
-            "score":score,
-            "users":user,
-            "map":map,
-            "win":win,
-            "name":req.session.username
-        }
-    ]
+    var data = [{
+        "score": score,
+        "users": user,
+        "map": map,
+        "win": win,
+        "head": head,
+        "name": req.session.username
+    }]
     res.send(data);
+    // console.log(data, "data");
     // console.log("key;")
     // console.log(req.body.keynum);
 
@@ -405,11 +472,11 @@ app.post('/data', urlencodedParser, function (req, res) {
 // }
 // )
 
-var server = app.listen(8081, function () {
+var server = app.listen(8081, "127.0.0.1");
 
-    var host = server.address().address;
-    var port = server.address().port;
+//     var host = server.address().address;
+//     var port = server.address().port;
 
-    console.log("应用实例，访问地址为 http://%s:%s", host, port);
+//     console.log("应用实例，访问地址为 http://%s:%s", host, port);
 
-})
+// })
