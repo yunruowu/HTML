@@ -40,12 +40,12 @@
             <div id="map">
                 <!-- 虚拟按键 -->
                 <div id="des">
-                    <button id ="up" class="span" onclick="up()">W</button>
+                    <button id ="up" class="span">W</button>
                 </div> 
                 <div id="s">
-                    <button id ="left" class="span" onclick="left()">A</button>
-                    <button id ="down" class="span" onclick="down()">S</button>  
-                    <button id ="right" class="span" onclick="right()">D</button>
+                    <button id ="left" class="span" >A</button>
+                    <button id ="down" class="span" >S</button>  
+                    <button id ="right" class="span" >D</button>
                 </div>
                 <!-- 蛇和食物 -->
                 <!-- <div id = "food" style="left: 40px;top: 40px;"></div> -->
@@ -58,8 +58,8 @@
                 <!-- 开始和暂停 --> 
                 <button class="div" id = 'ready' >准备</button>
                 <span id = "S_and_S">
-                    <button class="div" id = "start" onclick="start()">开始</button>
-                    <button class="div" id = "stop" onclick="end()">暂停</button> 
+                    <button class="div" id = "start">开始</button>
+                    <button class="div" id = "stop" >暂停</button> 
                 </span>
                  <button class="div" id = "restart" >重新开始</button>
                 
@@ -72,15 +72,11 @@
                 </select>
             </div>     
             <form  action="http://127.0.0.1:8081/logout" method="post">
-            <button type="submit" value=" 注册" onclick="check_p()"> 登出</button>
+            <button type="submit" value=" 注册" > 登出</button>
             </form >         
         </h2>
         <!-- 背景音乐 -->
         <embed src="./001.mp3" hidden="true" autostart="true" loop="true"> 
-        <li></li>
-        <u id='u'></u>
-        <script type="text/javascript" src="js_for_ajax.js"></script>
-        <button  value=" 注册" onclick="ajax('data.json?t=' + new Date().getTime())">登出</button>
     </body>
 </html>
 

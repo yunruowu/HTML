@@ -2,36 +2,24 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var sqlite3 = require('sqlite3');
-
 var util = require('util');
-// app.use(cookieParser())
-
 var session = require('express-session');
-
-
 var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({
     extended: false
 })
-//   
 var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 var dir = __dirname + '/public/';
-
 var identityKey = 'skey';
-
-
-
 // 用于加密
-
 function hash(str) {
     const crypto = require('crypto');
     const hash = crypto.createHash('md5');
     hash.update(str);
     return hash.digest('hex');
 }
-
-
+//会话管理
 app.use(session({
     name: identityKey,
     secret: 'dev',
@@ -41,10 +29,7 @@ app.use(session({
         maxAge: 1000 * 1000
     } //30 天免登陆
 }));
-
-
-
-
+//通过网址登录，已经登录的跳转到主页面，否则跳转到登录界面
 app.get('/', function (req, res) {
 
     console.log("通过主页登录");
@@ -57,35 +42,12 @@ app.get('/', function (req, res) {
         console.log("未登录，跳转到登录界面");
         res.redirect('/login');
     }
-    // if (req.cookies.isVisit) {
-    //     console.log(req.cookies);
-    //     res.send("再次欢迎访问");
-    // } else {
-    //     res.cookie('isVisit', 1, {maxAge: 60 * 1000});
-    //     res.send("欢迎第一次访问");
-    // }
 })
-
-
-
-
 app.post('/', function (req, res) {
     console.log("zhuye");
-    // if(req.session.username){;  //判断session 状态，如果有效，则返回主页，否则转到登录页面
-    //     res.render('index.html',{username : req.session.username});
-    // }else{
-    //     res.redirect('/login');
-    // }
-    // if (req.cookies.isVisit) {
-    //     console.log(req.cookies);
-    //     res.send("再次欢迎访问");
-    // } else {
-    //     res.cookie('isVisit', 1, {maxAge: 60 * 1000});
-    //     res.send("欢迎第一次访问");
-    // }
 })
 
-
+//退出登录
 app.post('/logout', function (req, res) {
     req.session.username = null; // 删除session
     console.log("登出");
@@ -130,22 +92,22 @@ app.post("/register", urlencodedParser, function (req, res) {
     // res.send(" 用户已注册");
 })
 
-
+//用于跳转到login post
 app.get('/login', function (req, res) {
     console.log("从主页跳转：get login，跳转到post login");
     console.log("ss", __dirname);
     res.sendFile(__dirname + "/public/" + "login.html");
 })
-
+//在主界面的时候，如果没有登录的话，则跳转到登录界面
 app.get('/main', function (req, res) {
-    if(req.session.username==undefined){
+    if (req.session.username == undefined) {
         res.redirect('/login')
     }
     console.log("从主页跳转get main");
     console.log("ss", __dirname);
     res.sendFile(__dirname + "/public/" + "main.html");
 })
-
+//登录的管理界面
 var user = []
 app.post("/login", urlencodedParser, function (req, res) {
     // console.log("postlogin")
@@ -156,28 +118,15 @@ app.post("/login", urlencodedParser, function (req, res) {
     console.log("lofgin:", username, pwd);
     var db = new sqlite3.Database('./DATAB/TESTDB.db');
     db.get("SELECT * FROM users WHERE username = ?", [username], function (err, row) {
-        // console.log("sss");
-        // console.log(err);
-        // console.log(row);
-        // 没有注册了
         if (row == undefined) {
             console.log("用户不存在");
             res.send("登录失败：用户名不注册！");
-        }
-        // 注册 
-        else {
+        } else {
             if (row.password == pwd) {
-                // res.send("登录成功");
-
-                // res.sendFile('/HTML/snake/theme.css');
-                // res.sendFile('/HTML/snake/fun.js');
-                console.log("登录成功");
-
-                // res.sendFile(dir + 'main.html');
+                console.log(username, "登录成功");
                 req.session.username = username;
                 user[user.length] = username;
                 res.redirect('/main');
-                // console.log(req.session.username);
             } else {
                 res.send("登录失败:密码错误！");
             }
@@ -186,16 +135,12 @@ app.post("/login", urlencodedParser, function (req, res) {
     });
 })
 
-
+//注册时判读用户名是否存在；
 app.post('/getusername', urlencodedParser, function (req, res) {
     var username = req.body.username1;
     var db = new sqlite3.Database('./DATAB/TESTDB.db');
     console.log(username);
     db.get("SELECT * FROM users WHERE username = ?", [username], function (err, row) {
-
-        // console.log(err);
-        // console.log(row);
-        // 没有注册了
         if (row == undefined) {
             res.send("OK");
             console.log("ok");
@@ -210,7 +155,7 @@ app.post('/getusername', urlencodedParser, function (req, res) {
 var destination = [65, 65, 65];
 var tempdest = [65, 65, 65];
 var map = new Array();
-var snake = [];
+var snake = []; //存储蛇的位置，身体和头部
 var win;
 //存储整个地图
 for (var i = 0; i < 16; i++) {
@@ -221,16 +166,18 @@ for (var i = 0; i < 16; i++) {
 
 }
 score = [0, 0, 0];
-
+//头的位置
 var head = [
-    [12, 12],
+    // [12, 12],
     [2, 12],
-    [5,12]
+    [5, 12]
 ];
+//用于启动游戏
 var startGame;
 snake[0] = [head[0]];
 snake[1] = [head[1]];
 snake[2] = [head[2]];
+//随机生成食物
 var y = Math.ceil(((Math.random() * 24) % 24) - 1);
 var x = Math.ceil(((Math.random() * 16) % 16) - 1);
 map[x][y] = 5;
@@ -245,15 +192,13 @@ function restart() {
         }
     }
     win = undefined;
-    // snake[0].length=0;
-    // snake[1].length=0;
     for (var i = 0; i < snake.length; i++) {
         snake[i].length = 0
     }
     head = [
-        [12, 12],
+        // [12, 12],
         [2, 12],
-        [5,12]
+        [5, 12]
     ];
     snake[0] = [head[0]];
     snake[1] = [head[1]];
@@ -265,6 +210,7 @@ function restart() {
     destination = [65, 65, 65];
     tempdest = [65, 65, 65];
 }
+//对按键事件做出反应
 app.post('/Keys', urlencodedParser, function (req, res) {
     // map [2][3] =1;
     var data = [{
@@ -282,27 +228,24 @@ app.post('/Keys', urlencodedParser, function (req, res) {
         }
     }
 })
-var key_num = [0, 0,0];
-
+var key_num = [0, 0, 0];
+//主要的函数，移动，判断输赢，num为第几个玩家
 function getmap(num) {
     var len = []
-    len[num] = snake[num].length;
+    len[num] = snake[num].length; //蛇的长度
     var tem = [
         [0, 0],
         [0, 0],
-        [0,0]
+        [0, 0]
     ];
-
+    //进行身体移动
     tem[num][0] = snake[num][len[num] - 1][0];
     tem[num][1] = snake[num][len[num] - 1][1];
-    // tem[num][1] = snake[num][len[num] - 1][1];
     for (var i = len[num] - 1; i > 0; i = i - 1) {
         snake[num][i][0] = snake[num][i - 1][0];
         snake[num][i][1] = snake[num][i - 1][1];
     }
-
-
-    // console.log(destination[num], tempdest);
+    // 舌头的移动
     if (key_num[num] == 0) {
         if (tempdest[num] == 68) { //→
             if (destination[num] == 65) {
@@ -332,49 +275,36 @@ function getmap(num) {
                 destination[num] = tempdest[num];
             }
         }
-
-
-        key_num[num]++;
+        key_num[num]++; //控制按键的数量，不会出错
     }
     if (destination[num] == 65) { //→
-
-
         head[num][0] = head[num][0];
         head[num][1] = head[num][1] - 1;
-
     }
     if (destination[num] == 68) { //←
-
         head[num][0] = head[num][0];
         head[num][1] = head[num][1] + 1;
-
     }
     if (destination[num] == 83) { //↑
-
         head[num][0] = head[num][0] + 1;
         head[num][1] = head[num][1];
-
     }
     if (destination[num] == 87) { //↓
-
         head[num][0] = head[num][0] - 1;
         head[num][1] = head[num][1];
-
     }
     key_num[num] = 0
 
-
-    // snake[num][snake[num].length][1]= ;
     snake[num][0] = head[num];
+    //清空所有这条蛇的数据
     for (var i = 0; i < 16; i++) {
         for (var j = 0; j < 24; j++) {
             if (map[i][j] != 5 && map[i][j] == num + 1) {
                 map[i][j] = 0;
             }
         }
-
     }
-
+    //失败
     if (head[num][0] < 0 || head[num][0] >= 16 || head[num][1] >= 24 || head[num][1] < 0) {
         console.log("失败");
         clearInterval(startGame);
@@ -408,45 +338,86 @@ var ready = 0;
 app.post('/Ready', urlencodedParser, function (req, res) {
     ready++;
     console.log(ready, req.session.username);
-    if (ready == 3) {
+    if (ready == 2) {
+        starttime();
         startGame = setInterval(
+
             function move() {
                 // console.log("move", head[num], snake[num]);
                 getmap(0);
                 getmap(1);
-                getmap(2);
+                // getmap(2);
             }, 1000);
-        res.send("ok");
+        var sda = [{
+            "user": user,
+            "username": req.session.username
+        }]
+        res.send(sda);
     }
 })
 app.post('/stopgame', urlencodedParser, function (req, res) {
     clearInterval(startGame);
+    endtime();
+    res.send("ok");
 })
 app.post('/startgame', urlencodedParser, function (req, res) {
+    starttime();
     startGame = setInterval(
         function move() {
             // console.log("move", head[num], snake[num]);
             getmap(0);
-            getmap(2);
+            // getmap(2);
             getmap(1);
 
         }, 1000);
+    res.send("ok");
 })
 app.post('/restart', urlencodedParser, function (req, res) {
-    clearInterval(startGame);
+
+    if (win == undefined) {
+        console.log("st1")
+        clearInterval(startGame);
+    } else {
+        console.log("st2")
+        win == undefined;
+    }
+    h = 0;
+    m = 0;
+    s = 0;
     restart();
     startGame = setInterval(
         function move() {
             // console.log("move", head[num], snake[num]);
             getmap(0);
             getmap(1);
-            getmap(2);
+            // getmap(2);
         }, 1000);
+    res.send("ok");
 })
 
 //重新设置地图得初值
 
+function getgrade(play1, play2) {
+    var db = new sqlite3.Database('./DATAB/TESTDB.db');
+    console.log(username);
+    db.get("SELECT * FROM grade WHERE play1 = ? and play = ? ", [play1, play2], function (err, row) {
+        if (row == undefined) {
+            db.serialize(function () {
+                //向数据库写入注册信息
+                console.log("用户不存在,注册新用户！");
 
+                var new_pwd = hash(pwd);
+                console.log("加密之后：", new_pwd);
+                db.run("INSERT INTO grade (play1, play2,grade1,grade2) VALUES (?,?,?,?)", [play1,play2,grade1,grade2]);
+                console.log("注册成功！");
+            });
+        } else {
+            grade1 = row.grade1;
+            grade2 = row.grade2;
+        }
+        db.close();
+    })
+}
 app.post('/data', urlencodedParser, function (req, res) {
     // for (var i = 0;i<16;i++){
     //     for(var j = 0;j<24;j++){
@@ -456,12 +427,15 @@ app.post('/data', urlencodedParser, function (req, res) {
     //         }
     //     }
     // }
+    getgrade()
+    time = [showh, showm, shows]
     var data = [{
         "score": score,
         "users": user,
         "map": map,
         "win": win,
         "head": head,
+        "time": time,
         "name": req.session.username
     }]
     res.send(data);
@@ -471,7 +445,41 @@ app.post('/data', urlencodedParser, function (req, res) {
 
 })
 
+function settime(a) {
+    if (a < 10)
+        a = "0" + a;
+    return a;
+}
+h = 0;
+m = 0;
+s = 0;
+var showh = settime(h);
+var showm = settime(m);
+var shows = settime(s);
 
+function starttime() {
+    showh = settime(h);
+    showm = settime(m);
+    shows = settime(s);
+    s++;
+    if (s == 60) {
+        s = 0;
+        m++;
+    }
+    if (m == 60) {
+        m = 0;
+        h++;
+    }
+    t = setTimeout(
+        function () {
+            starttime();
+        },
+        1000);
+}
+
+function endtime() {
+    clearTimeout(t);
+}
 
 // app.post('/test', urlencodedParser,function(req,res){
 //     mmmp = [1,2,3];
