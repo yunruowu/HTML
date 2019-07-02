@@ -330,7 +330,7 @@ function getmap(num) {
         map[x][y] = 5;
         snake[num][snake[num].length] = [tem[num][0], tem[num][1]];
     }else{
-        if (map[head[num][0]][head[num][1]!=0]) {
+        if (map[head[num][0]][head[num][1]]!=0) {
             console.log("失败");
             updatedb(num)
             clearInterval(startGame);
@@ -384,7 +384,7 @@ app.post('/Ready', urlencodedParser, function (req, res) {
                 getmap(0);
                 getmap(1);
                 // getmap(2);
-            }, 1000);
+            }, 500);
         var sda = [{
             "user": user,
             "username": req.session.username
@@ -406,7 +406,7 @@ app.post('/startgame', urlencodedParser, function (req, res) {
             // getmap(2);
             getmap(1);
 
-        }, 1000);
+        }, 500);
     res.send("ok");
 })
 app.post('/restart', urlencodedParser, function (req, res) {
@@ -428,7 +428,7 @@ app.post('/restart', urlencodedParser, function (req, res) {
             getmap(0);
             getmap(1);
             // getmap(2);
-        }, 1000);
+        }, 500);
     res.send("ok");
 })
 
@@ -545,7 +545,7 @@ function endtime() {
 // }
 // )
 
-var server = app.listen(8081, "127.0.0.1");
+var server = app.listen(8081, "192.168.43.180");
 
 //     var host = server.address().address;
 //     var port = server.address().port;

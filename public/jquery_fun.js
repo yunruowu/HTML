@@ -400,7 +400,7 @@ var readygame
 function startplay() {
     ready = 0;
     if (ready == 0) {
-        readygame = setInterval('move()', 50);
+        readygame = setInterval('move()', 25);
         ready = 1;
         console.log("move")
     }
