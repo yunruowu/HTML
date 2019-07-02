@@ -22,3 +22,6 @@ sqlite> CREATE TABLE DEPARTMENT(
    DEPT           CHAR(50) NOT NULL,
    EMP_ID         INT      NOT NULL
 );
+
+
+update grade set grade1 = 3,grade2 =2 WHERE play1 = 'xyy'and play2 = 'lc';

@@ -273,12 +273,23 @@ $(document).ready(function () {
             function (data, status) {
                 alert("wwww")
                 if (ready == 1) {
-                    console.log("restart");
+                    console.log("restart");    
                     startplay();
                 }
             }
         )
     })
+    $("#check").click(function(){
+        $.post(
+            '/check',
+            function (data, status) {
+                
+                alert(data)
+                
+            }
+        )
+    })
+
 
 });
 var sname = 0;
@@ -326,7 +337,7 @@ function move() {
                 alert(win);
                 clearInterval(readygame);
                 ready = 1;
-                startready = 1;
+                startready = 0;
             }
             // console.log(head);
             $(".body1").remove();

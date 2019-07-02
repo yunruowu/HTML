@@ -4,7 +4,7 @@ function fS(item) {
     // alert(arr[0])
     for (var i = 0; i < arr.length; i++) {
         var oUl = document.getElementById('play1');
-        var oLi = document.createElement('span');
+        var oLi = document.createElement('san');
 
         // oLi.innerHTML = '姓名：<span>' + arr[i].user + '</span> '
         // 性别：<span>' + arr[i].sex + '</span> 年龄：<span>' + arr[i].age + '</span>';

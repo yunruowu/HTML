@@ -305,7 +305,6 @@ function starttime() {
     var showh = settime(h);
     var showm = settime(m);
     var shows = settime(s);
-    document.getElementById("showtime").innerHTML = showh + ":" + showm + ":" + shows;
     s++;
     if (s == 60) {
         s = 0;

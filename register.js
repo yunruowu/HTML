@@ -209,6 +209,8 @@ function restart() {
     map[x][y] = 5;
     destination = [65, 65, 65];
     tempdest = [65, 65, 65];
+    ready = 0;
+    clearInterval(startGame);
 }
 //对按键事件做出反应
 app.post('/Keys', urlencodedParser, function (req, res) {
@@ -305,8 +307,9 @@ function getmap(num) {
         }
     }
     //失败
-    if (head[num][0] < 0 || head[num][0] >= 16 || head[num][1] >= 24 || head[num][1] < 0) {
+    if (head[num][0] < 0 || head[num][0] >= 16 || head[num][1] >= 24 || head[num][1] < 0 ) {
         console.log("失败");
+        updatedb(num)
         clearInterval(startGame);
         win = user[num];
         head[num] = [0, 0];
@@ -326,13 +329,47 @@ function getmap(num) {
         var x = Math.ceil(((Math.random() * 16) % 16) - 1);
         map[x][y] = 5;
         snake[num][snake[num].length] = [tem[num][0], tem[num][1]];
+    }else{
+        if (map[head[num][0]][head[num][1]!=0]) {
+            console.log("失败");
+            updatedb(num)
+            clearInterval(startGame);
+            win = user[num];
+            head[num] = [0, 0];
+            for (var i = 0; i < 16; i++) {
+                for (var j = 0; j < 24; j++) {
+                    map[i][j] = 0;
+                }
+            }
+            for (var i = 0; i < snake[num].length; i++) {
+                snake[num][i] = [0, 0];
+            }
+        }
     }
     for (var i = 0; i < snake[num].length; i++) {
         map[snake[num][i][0]][snake[num][i][1]] = num + 1;
         // console.log(snake[num][i][0], snake[num][i][1])
     }
 }
-
+function updatedb(numplay){
+    console.log(user[0],user[1])
+    var tem = getgrade(user[0],user[1]);
+    console.log("sss",tem)
+    if(numplay ==0){
+        tem[0] = Number(tem[0]) + Number(1);
+    }
+    if(numplay ==1){
+        tem[1] = Number(tem[1]) + Number(1);
+    }
+    var db = new sqlite3.Database('./DATAB/TESTDB.db');
+    db.serialize(function () {
+        //向数据库写入注册信息
+        console.log([tem[0],tem[1],user[0],user[1]])
+        db.run("update grade set grade1 = ?,grade2 =? WHERE play1 =?and play2 =?;", [tem[0],tem[1],user[0],user[1]]);
+        db.run("update grade set grade1 = ?,grade2 =? WHERE play1 =?and play2 =?;", [tem[1],tem[0],user[1],user[0]]);
+        console.log("注册成功！");
+    });
+}
 
 var ready = 0;
 app.post('/Ready', urlencodedParser, function (req, res) {
@@ -396,28 +433,43 @@ app.post('/restart', urlencodedParser, function (req, res) {
 })
 
 //重新设置地图得初值
-
+var grade1,grade2;
 function getgrade(play1, play2) {
     var db = new sqlite3.Database('./DATAB/TESTDB.db');
-    console.log(username);
-    db.get("SELECT * FROM grade WHERE play1 = ? and play = ? ", [play1, play2], function (err, row) {
+    // console.log(username);
+    // var grade1,grade2;
+    var str = "SELECT * FROM grade WHERE play1= " +  play1 + "AND play2 ="+ play2;
+    // console.log(str);
+    db.get("SELECT * FROM grade WHERE play1=? AND play2 =? ", [play1, play2], function (err, row) {
+        // console.log(play1,play2);
+        // console.log(row,err);
         if (row == undefined) {
             db.serialize(function () {
                 //向数据库写入注册信息
-                console.log("用户不存在,注册新用户！");
-
-                var new_pwd = hash(pwd);
-                console.log("加密之后：", new_pwd);
-                db.run("INSERT INTO grade (play1, play2,grade1,grade2) VALUES (?,?,?,?)", [play1,play2,grade1,grade2]);
-                console.log("注册成功！");
+                
+                db.run("INSERT INTO grade (play1, play2,grade1,grade2) VALUES (?,?,?,?)", [play1,play2,0,0]);
+                // console.log("注册成功！");
             });
+            grade1 = 0;
+            grade2 = 0;
         } else {
             grade1 = row.grade1;
             grade2 = row.grade2;
         }
         db.close();
     })
+    return [grade1,grade2];
 }
+app.post('/check',urlencodedParser,function(req,res){
+    var match
+    if (ready==2)
+        match = getgrade(user[0],user[1]);
+    if (ready ==1){
+        match = [0,0];
+    }
+    var ma = user[0]+" : "+user[1]+ "  "+ match[0]+" : "+match[1];
+    res.send(ma);
+})
 app.post('/data', urlencodedParser, function (req, res) {
     // for (var i = 0;i<16;i++){
     //     for(var j = 0;j<24;j++){
@@ -427,7 +479,7 @@ app.post('/data', urlencodedParser, function (req, res) {
     //         }
     //     }
     // }
-    getgrade()
+    
     time = [showh, showm, shows]
     var data = [{
         "score": score,
